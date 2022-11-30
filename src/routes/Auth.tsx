@@ -31,6 +31,9 @@ const Auth = () => {
         data = await authService.signInWithEmailAndPassword(email, password);
         console.log(data);
       }
+      // const data = newAccount
+      //   ? await authService.createUserWithEmailAndPassword(email, password)
+      //   : await authService.signInWithEmailAndPassword(email, password);
     } catch (error: any) {
       //에러메세지 좀 더 이쁘게하자
       setError(error.message);

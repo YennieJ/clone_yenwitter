@@ -5,6 +5,7 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
+
 import Profile from "routes/Profile";
 import Auth from "routes/Auth";
 import Home from "routes/Home";
@@ -12,15 +13,18 @@ import Navigation from "./Navigation";
 
 interface AppRouterProps {
   isLogedIn: boolean;
+  userObj: any;
 }
-const AppRouter = ({ isLogedIn }: AppRouterProps) => {
+const AppRouter = ({ isLogedIn, userObj }: AppRouterProps) => {
   return (
     <Router>
       {isLogedIn && <Navigation />}
       <Switch>
         {isLogedIn ? (
           <>
-            <Route exact path="/" component={Home} />
+            <Route exact path="/">
+              <Home userObj={userObj} />
+            </Route>
             <Route exact path="/profile" component={Profile} />
           </>
         ) : (
