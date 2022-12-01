@@ -14,18 +14,21 @@ import Navigation from "./Navigation";
 interface AppRouterProps {
   isLogedIn: boolean;
   userObj: any;
+  refreshUser: () => void;
 }
-const AppRouter = ({ isLogedIn, userObj }: AppRouterProps) => {
+const AppRouter = ({ isLogedIn, userObj, refreshUser }: AppRouterProps) => {
   return (
     <Router>
-      {isLogedIn && <Navigation />}
+      {isLogedIn && <Navigation userObj={userObj} />}
       <Switch>
         {isLogedIn ? (
           <>
             <Route exact path="/">
               <Home userObj={userObj} />
             </Route>
-            <Route exact path="/profile" component={Profile} />
+            <Route exact path="/profile">
+              <Profile userObj={userObj} refreshUser={refreshUser} />
+            </Route>
           </>
         ) : (
           <>
