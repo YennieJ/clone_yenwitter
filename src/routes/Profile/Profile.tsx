@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { authService, dbService } from "service/fbase";
+import { authService } from "service/fbase";
+
+import * as S from "./Profile.styled";
 
 interface ProfileProps {
   userObj: any;
@@ -8,7 +10,9 @@ interface ProfileProps {
 }
 const Profile = ({ userObj, refreshUser }: ProfileProps) => {
   const history = useHistory();
-  const [newDisplayName, setNewDisplayName] = useState(userObj.displayName);
+  const [newDisplayName, setNewDisplayName] = useState<any>(
+    userObj.displayName || ""
+  );
   const onLogOutClick = () => {
     authService.signOut();
     history.push("/");
@@ -42,18 +46,19 @@ const Profile = ({ userObj, refreshUser }: ProfileProps) => {
   //   getMyYenweets();
   // });
   return (
-    <>
-      <form onSubmit={onSubmit}>
+    <S.Container>
+      <S.Form onSubmit={onSubmit}>
         <input
           onChange={onChange}
           type="text"
+          autoFocus
           placeholder="Display name"
           value={newDisplayName}
         />
-        <input type="submit" value="Update Profile" />
-      </form>
+        <button type="submit">Update Profile</button>
+      </S.Form>
       <button onClick={onLogOutClick}>Log Out</button>
-    </>
+    </S.Container>
   );
 };
 

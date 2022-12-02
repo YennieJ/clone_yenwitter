@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 
-import { YenweetsType } from "routes/Home";
+import { YenweetsType } from "routes/Home/Home";
 import { dbService, storageService } from "service/fbase";
+
+import * as S from "./Yenweet.styled";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 
 interface YenweetProps {
   yenweetObj: YenweetsType;
@@ -36,10 +40,10 @@ const Yenweet = ({ yenweetObj, isOwner }: YenweetProps) => {
     setNewYenweet(value);
   };
   return (
-    <div>
+    <S.Yenweet>
       {editing ? (
         <>
-          <form onSubmit={onSubmit}>
+          <S.EditForm onSubmit={onSubmit}>
             <input
               type="text"
               placeholder="Edit your Yenweet"
@@ -47,30 +51,31 @@ const Yenweet = ({ yenweetObj, isOwner }: YenweetProps) => {
               required
               onChange={onChange}
             />
-            <input type="submit" value="Update" />
-          </form>
-          <button onClick={() => setEditing((prev) => !prev)}>Cancle</button>
+            <button type="submit">Update</button>
+          </S.EditForm>
+          <S.Button onClick={() => setEditing((prev) => !prev)}>
+            Cancle
+          </S.Button>
         </>
       ) : (
         <>
           <h4>{yenweetObj.text}</h4>
           {yenweetObj.attachmentURL && (
-            <img
-              alt=""
-              src={yenweetObj.attachmentURL}
-              width="50px"
-              height="50px"
-            />
+            <img alt="" src={yenweetObj.attachmentURL} />
           )}
           {isOwner && (
-            <>
-              <button onClick={onDeleteClick}>Delete</button>
-              <button onClick={() => setEditing((prev) => !prev)}>Edit</button>
-            </>
+            <S.Action>
+              <button onClick={onDeleteClick}>
+                <FontAwesomeIcon icon={faTrash} />
+              </button>
+              <button onClick={() => setEditing((prev) => !prev)}>
+                <FontAwesomeIcon icon={faPencilAlt} />
+              </button>
+            </S.Action>
           )}
         </>
       )}
-    </div>
+    </S.Yenweet>
   );
 };
 

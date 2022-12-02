@@ -1,30 +1,26 @@
+import GlobalStyle from "Grobal.styled";
 import React, { useEffect, useState } from "react";
 
 import { authService } from "service/fbase";
 
-import AppRouter from "./Router";
+import AppRouter from "./components/Router/Router";
 
-interface ProfileProps {
-  displayName: string;
-  photoURL?: string;
-}
 const App = () => {
   const [init, setInit] = useState(false);
   // const [isLogedIn, setIsLoggedIn] = useState<boolean>(false);
   const [userObj, setUserObj] = useState<any>(null);
   useEffect(() => {
     authService.onAuthStateChanged((user) => {
-      user &&
+      if (user) {
         // setIsLoggedIn(true);
         setUserObj({
           displayName: user.displayName,
           uid: user.uid,
           updateProfile: (args: any) => user.updateProfile(args),
         });
-
-      // else {
-      //   setIsLoggedIn(false);
-      // }
+      } else {
+        setUserObj(null);
+      }
       setInit(true);
     });
   }, []);
@@ -34,11 +30,12 @@ const App = () => {
       setUserObj({
         displayName: user.displayName,
         uid: user.uid,
-        updateProfile: (args: ProfileProps) => user.updateProfile(args),
+        updateProfile: (args: any) => user.updateProfile(args),
       });
   };
   return (
     <div>
+      <GlobalStyle />
       {init ? (
         <AppRouter
           refreshUser={refreshUser}
@@ -48,7 +45,6 @@ const App = () => {
       ) : (
         "loading..."
       )}
-      <footer> &copy; {new Date().getFullYear()} Yenwitter</footer>
     </div>
   );
 };
